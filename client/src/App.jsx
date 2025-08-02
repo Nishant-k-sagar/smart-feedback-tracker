@@ -7,7 +7,6 @@ import FeedbackList from "./components/FeedbackList";
 import AIAssistant from "./components/AIAssistant";
 
 // This is our server's base URL, which is now correctly set.
-const VITE_API_URL = 'https://smart-feedback-tracker-api.onrender.com' //this was in dotenv earlier in development phase
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5001";
 
 function App() {
