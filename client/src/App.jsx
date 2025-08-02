@@ -1,13 +1,13 @@
 // client/src/App.jsx
 
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import FeedbackForm from './components/FeedbackForm';
-import FeedbackList from './components/FeedbackList';
-import AIAssistant from './components/AIAssistant';
+import { useState, useEffect } from "react";
+import axios from "axios";
+import FeedbackForm from "./components/FeedbackForm";
+import FeedbackList from "./components/FeedbackList";
+import AIAssistant from "./components/AIAssistant";
 
 // This is our server's base URL, which is now correctly set.
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5001";
 
 function App() {
   const [feedbackList, setFeedbackList] = useState([]);
@@ -23,7 +23,9 @@ function App() {
       setFeedbackList(res.data);
     } catch (error) {
       console.error("Failed to fetch feedback:", error);
-      setError("Could not load feedback. Check your connection or try again later.");
+      setError(
+        "Could not load feedback. Check your connection or try again later."
+      );
     } finally {
       setIsLoading(false);
     }
@@ -44,7 +46,7 @@ function App() {
   };
 
   const handleDeleteFeedback = async (id) => {
-    if (window.confirm('Are you sure you want to delete this feedback?')) {
+    if (window.confirm("Are you sure you want to delete this feedback?")) {
       try {
         await axios.delete(`${API_BASE_URL}/api/feedback/${id}`);
         fetchFeedback();
@@ -68,10 +70,26 @@ function App() {
   return (
     <div className="bg-slate-900 min-h-screen text-white font-sans">
       <div className="container mx-auto p-4 sm:p-8">
-        <header className="text-center mb-12">
-          <h1 className="text-4xl sm:text-5xl font-bold text-sky-400">Smart Feedback Tracker</h1>
+        {/* <header className="text-center mb-12">
+          <h1 className="text-4xl sm:text-5xl font-bold text-sky-400">FeedwizeX</h1>
           <p className="text-slate-400 mt-2">Submit feedback and get AI-powered insights.</p>
+        </header> */}
+        <header className="text-center mb-12">
+          <div className="flex justify-center items-center gap-3">
+            <img
+              src="/FeedwizeX.png"
+              alt="FeedwizeX Logo"
+              className="w-12 h-12 sm:w-15 sm:h-15 bg-white rounded-md"
+            />
+            <h1 className="text-4xl sm:text-5xl font-bold text-sky-400">
+              FeedwizeX
+            </h1>
+          </div>
+          <p className="text-slate-400 mt-2">
+            Submit feedback and get AI-powered insights.
+          </p>
         </header>
+
         <main className="grid md:grid-cols-2 gap-12 md:gap-16">
           <div className="space-y-8">
             <FeedbackForm onAddFeedback={addFeedback} />
