@@ -1,10 +1,13 @@
+// client/src/App.jsx
+
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import FeedbackForm from './components/FeedbackForm';
 import FeedbackList from './components/FeedbackList';
 import AIAssistant from './components/AIAssistant';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api/feedback';
+// This is our server's base URL, which is now correctly set.
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
 
 function App() {
   const [feedbackList, setFeedbackList] = useState([]);
@@ -15,10 +18,11 @@ function App() {
     try {
       setIsLoading(true);
       setError(null);
-      const res = await axios.get(API_URL);
+      // We now specifically request the /api/feedback endpoint
+      const res = await axios.get(`${API_BASE_URL}/api/feedback`);
       setFeedbackList(res.data);
-    } catch (err) {
-      console.error("Failed to fetch feedback:", err);
+    } catch (error) {
+      console.error("Failed to fetch feedback:", error);
       setError("Could not load feedback. Check your connection or try again later.");
     } finally {
       setIsLoading(false);
@@ -31,18 +35,19 @@ function App() {
 
   const addFeedback = async (feedback) => {
     try {
-      await axios.post(API_URL, feedback);
+      // We use the full endpoint path for POST requests as well
+      await axios.post(`${API_BASE_URL}/api/feedback`, feedback);
       fetchFeedback();
-    } catch (err) {
-      alert("Failed to submit feedback. Please try again.", err);
+    } catch (error) {
+      alert("Failed to submit feedback. Please try again.", error);
     }
   };
 
   const handleDeleteFeedback = async (id) => {
     if (window.confirm('Are you sure you want to delete this feedback?')) {
       try {
-        await axios.delete(`${API_URL}/${id}`);
-        fetchFeedback(); // Refresh list after deleting
+        await axios.delete(`${API_BASE_URL}/api/feedback/${id}`);
+        fetchFeedback();
       } catch (error) {
         console.error("Failed to delete feedback:", error);
         alert("Failed to delete feedback. Please try again.");
@@ -50,11 +55,10 @@ function App() {
     }
   };
 
-
   const handleUpdateFeedback = async (id, updatedData) => {
     try {
-      await axios.put(`${API_URL}/${id}`, updatedData);
-      fetchFeedback(); // Refresh list after updating
+      await axios.put(`${API_BASE_URL}/api/feedback/${id}`, updatedData);
+      fetchFeedback();
     } catch (error) {
       console.error("Failed to update feedback:", error);
       alert("Failed to update feedback. Please try again.");
@@ -62,16 +66,17 @@ function App() {
   };
 
   return (
-    <div className="font-sans bg-black">
+    <div className="bg-slate-900 min-h-screen text-white font-sans">
       <div className="container mx-auto p-4 sm:p-8">
         <header className="text-center mb-12">
-          <h1 className="text-4xl sm:text-5xl font-bold text-sky-500">Smart Feedback Tracker</h1>
-          <p className="text-white mt-2">Submit feedback and get AI-powered insights.</p>
+          <h1 className="text-4xl sm:text-5xl font-bold text-sky-400">Smart Feedback Tracker</h1>
+          <p className="text-slate-400 mt-2">Submit feedback and get AI-powered insights.</p>
         </header>
         <main className="grid md:grid-cols-2 gap-12 md:gap-16">
           <div className="space-y-8">
             <FeedbackForm onAddFeedback={addFeedback} />
-            <AIAssistant />
+            {/* The AIAssistant component needs the same fix */}
+            <AIAssistant apiBaseUrl={API_BASE_URL} />
           </div>
           <div className="max-h-[80vh] overflow-y-auto pr-2">
             <FeedbackList
@@ -84,11 +89,6 @@ function App() {
           </div>
         </main>
       </div>
-
-      {/* Footer */}
-    <footer className="text-center text-white py-4 border-t border-gray-700">
-    All copyright © reserved | Made with <span className="text-red-500">❤️</span> by Nishant-K-Sagar
-    </footer>
     </div>
   );
 }
