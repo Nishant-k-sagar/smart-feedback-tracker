@@ -29,7 +29,7 @@ export default function FeedbackItem({ feedback, onDelete, onUpdate }) {
           type="text"
           value={editedTitle}
           onChange={(e) => setEditedTitle(e.target.value)}
-          className="w-full p-2 bg-slate-800 rounded-md border border-slate-600 text-lg font-bold"
+          className="w-full p-2 bg-slate-800 rounded-md border border-slate-600 text-lg font-bold text-white"
         />
         <textarea
           value={editedDescription}
