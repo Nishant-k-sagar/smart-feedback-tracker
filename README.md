@@ -1,4 +1,4 @@
-# Smart Feedback Tracker
+# FeedWizex - Smart Feedback Tracker
 
 A full-stack **MERN** application that allows users to submit feedback for any product or service.  
 It features an integrated **AI assistant** (powered by **Groq API**) to instantly analyze and summarize all submitted feedback using natural language queries. This project can be used to query from the stored feedbacks and which further can be utilised.
